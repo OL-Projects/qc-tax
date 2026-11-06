@@ -34,6 +34,7 @@ pitch. The README leads with the bugs rather than the API.
 | Metadata | PASSED | `twine check dist/*` |
 | Clean-install smoke | works | sdist → fresh venv → correct numbers |
 | GitHub | **live** | https://github.com/OL-Projects/qc-tax (public, v1.0.0 tagged) |
+| CI | **all green** | 5 Python versions (3.9–3.13) + build job, run 42196195220 |
 | Jurisdictions | 10 checked against 2026 published rates | `eff` column verified |
 
 ### Correctness anchors (each verified against the primary source)
