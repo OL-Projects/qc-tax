@@ -1,0 +1,59 @@
+[build-system]
+requires = ["setuptools>=68", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "qc-tax"
+dynamic = ["version"]
+description = "Exact-to-the-cent Canadian sales tax math: Québec GST/QST, HST, PST, and SIN helpers. No floats, no compounding bugs."
+readme = "README.md"
+requires-python = ">=3.9"
+license = "MIT"
+license-files = ["LICENSE"]
+authors = [{ name = "OL", email = "ol@ol-services.ca" }]
+keywords = [
+  "quebec", "qst", "gst", "hst", "tva", "tax", "sales-tax", "canada",
+  "invoice", "accounting", "decimal", "money", "sin", "luhn",
+]
+classifiers = [
+  "Development Status :: 5 - Production/Stable",
+  "Intended Audience :: Developers",
+  "Intended Audience :: Financial and Insurance Industry",
+  "Operating System :: OS Independent",
+  "Programming Language :: Python :: 3",
+  "Programming Language :: Python :: 3 :: Only",
+  "Programming Language :: Python :: 3.9",
+  "Programming Language :: Python :: 3.10",
+  "Programming Language :: Python :: 3.11",
+  "Programming Language :: Python :: 3.12",
+  "Programming Language :: Python :: 3.13",
+  "Topic :: Office/Business :: Financial :: Accounting",
+  "Typing :: Typed",
+]
+dependencies = []
+
+[project.optional-dependencies]
+test = ["pytest>=7"]
+
+[project.urls]
+Homepage = "https://github.com/OL-Projects/qc-tax"
+Repository = "https://github.com/OL-Projects/qc-tax"
+Issues = "https://github.com/OL-Projects/qc-tax/issues"
+Changelog = "https://github.com/OL-Projects/qc-tax/blob/main/CHANGELOG.md"
+
+[tool.setuptools.dynamic]
+version = { attr = "qc_tax.__version__" }
+
+[tool.setuptools.packages.find]
+include = ["qc_tax*"]
+
+[tool.setuptools.package-data]
+qc_tax = ["py.typed"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+addopts = "-q"
+
+[tool.mypy]
+python_version = "3.9"
+strict = true
