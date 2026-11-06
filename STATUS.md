@@ -28,31 +28,42 @@ pitch. The README leads with the bugs rather than the API.
 | Item | Status | Evidence |
 |------|--------|----------|
 | Library | done | `qc_tax/` — `_core.py`, `_format.py`, `_sin.py` |
-| Tests | **109 passing** | from source **and** from extracted sdist |
+| Tests | **109 passing** | from source, extracted sdist, **and a fresh public clone** |
 | Doctests | 7 passing | `pytest --doctest-modules qc_tax/` |
-| Build | clean | `python -m build` |
+| Build | clean | `python -m build` → wheel + sdist in `dist/` |
 | Metadata | PASSED | `twine check dist/*` |
 | Clean-install smoke | works | sdist → fresh venv → correct numbers |
+| GitHub | **live** | https://github.com/OL-Projects/qc-tax (public, v1.0.0 tagged) |
 | Jurisdictions | 10 checked against 2026 published rates | `eff` column verified |
 
-### Correctness anchors
-- `$100.00 → GST $5.00 + QST $9.98 = $114.98` — Revenu Québec IN-256-V.
+### Correctness anchors (each verified against the primary source)
+- `$100.00 → GST $5.00 + QST $9.98 = $114.98` — Revenu Québec **IN-256-V**.
 - `extract()` is a **true inverse**: 20,000 sampled amounts, **0 failures**
   (the naive implementation failed ~16%, which was the most valuable bug found).
-- Manitoba RST is on the **pre-GST** price (MB Info. Bulletin RST 001) — an
-  initial compounding assumption was wrong and was corrected against the source.
-- Nova Scotia HST is **14%** since 1 April 2025 (CRA Notice 342).
+- Manitoba RST is on the **pre-GST** price (MB Information Bulletin **RST 001**)
+  — an initial compounding assumption was wrong and was corrected against it.
+- Nova Scotia HST is **14%** since 1 April 2025 (CRA **Notice 342**).
+- A leading-zero SIN is legal — the CRA publishes **`046 454 286`** as its own
+  example, which several popular validators wrongly reject.
 
 ## What still blocks publishing
 
-1. **No PyPI account or API token.** This is the only hard blocker.
-   Requires the owner to create the project on PyPI and a scoped API token
-   (or a Trusted Publisher — see below). Nothing else is missing.
-2. **GitHub repo not yet created/pushed** at time of writing (name is free;
-   `OL-Projects` is authenticated locally via `gh`, so this is a one-command step).
-3. **No tag/release** — `v1.0.0` tag should be cut with the upload.
-4. Nice-to-have: `ol@ol-services.ca` author email — confirm it's the address
-   the owner wants public on the package.
+**Exactly one thing: a PyPI upload credential.** The package is otherwise
+complete and verified — built artifacts pass `twine check`, install cleanly, and
+the shipped test suite passes from a fresh public clone.
+
+1. **No PyPI account/token.** Owner action required:
+   - create/link the PyPI account, then either
+   - generate a scoped API token (project: `qc-tax`), or
+   - **preferred:** set up Trusted Publishing pointing at
+     `OL-Projects/qc-tax` + workflow `publish.yml` (no stored secret).
+2. **Confirm the public author email** — currently `ol@ol-services.ca`; this
+   becomes visible on the PyPI package page.
+3. Optional hardening: a `publish.yml` workflow on tag push (needs the trusted
+   publisher in place first, so it was deliberately not added yet — a workflow
+   that can't authenticate is worse than none).
+
+Repo, tag, description and topics are all done. Nothing else is missing.
 
 ## Publish procedure (once the token exists)
 
